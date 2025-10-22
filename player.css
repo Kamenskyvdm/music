@@ -1,5 +1,5 @@
 body {
-    background-color: #0d0221;
+    background-color: #000;
     color: #2de2e6;
     font-family: 'VT323', monospace;
     display: flex;
@@ -10,17 +10,31 @@ body {
     margin: 0;
 }
 
+#progressContainer{
+    margin: 10px;
+
+}
+
 #log {
-    background: #0d0221;
+    background: #000;
     color: #2de2e6;
     font-family: 'VT323', monospace;
     padding: 10px;
     width: 600px;
-    height: 120px;
+    max-height: 200px;
     overflow-y: auto;
-    border-radius: 4px;
-    border: 1px solid #2de2e6;
 }
+
+#log::-webkit-scrollbar{
+    width: 8px;
+}
+#log::-webkit-scrollbar-track{
+    background: #000;
+}
+#log::-webkit-scrollbar-thumb{
+    background-color: #2de2e6;
+}
+
 
 .log-entry {
     animation: fadeIn 0.3s ease-in;
@@ -39,7 +53,7 @@ body {
     margin-bottom: 20px;
 }
 
-button, input[type="file"], input[type="range"] {
+button, input[type="file"]{
     background: transparent;
     border: 1px solid #2de2e6;
     color: #2de2e6;
@@ -51,27 +65,97 @@ button, input[type="file"], input[type="range"] {
 }
 
 button:hover, input[type="file"]:hover {
-    background-color: #2de2e620;
+    background-color: #000;
+}
+input[type="range"]{
+    background: transparent;
+    color: #2de2e6;
+    font-family: inherit;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: 0.2s;
 }
 
 #volumeSlider {
-    width: 100%; /* растянуть по ширине контейнера */
-    appearance: none; /* убрать стандартный стиль браузера */
+    width: 100%; 
+    appearance: none; 
     background: #2de2e6;
-    height: 4px;
+    height: 1px;
 }
 
 #volumeSlider::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 14px;
     height: 14px;
-    background: #000000;
+    background: #2de2e6;
     cursor: pointer; /* выравнивание по центру полоски */
 }
 
 #visualizer {
-    border: 1px solid #2de2e6;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background: transparent;
     background-color: #000;
-    width: 600px;
-    height: 200px;
+    width: 100vw;
+    height: 150px;
+    z-index: 10;
+}
+
+#progressContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #2de2e6;
+    font-family: 'VT323', monospace;
+    margin-top: 10px;
+}
+
+#progressBar {
+    width: 300px;
+    appearance: none;
+    height: 4px;
+    background: #2de2e6;
+    border-radius: 2px;
+    outline: none;
+}
+
+#progressBar::-webkit-slider-thumb {
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    background: #2de2e6;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+}
+
+#progressBar::-webkit-slider-thumb:hover {
+    transform: scale(1.3);
+}
+
+#audioFile{
+    display: none;
+}
+
+#fileLabel{
+    display: inline-block;
+    padding: 8px 20px;
+    border: 1px solid #2de2e6;
+    color: #2de2e6;
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+}
+
+#fileLabel:hover{
+    background-color: #2de2e6;
+    color: #000;
+}
+
+#fileLabel:active{
+    transform: scale(0.95);
 }
