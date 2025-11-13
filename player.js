@@ -13,7 +13,7 @@ const playlistDiv = document.getElementById('playlist');
 let playlist = [];
 let currentTrackIndex = 0;
 
-// --- Canvas ---
+
 const canvas = document.getElementById('visualizer');
 const ctx = canvas.getContext('2d');
 
@@ -24,7 +24,7 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
-// --- AudioContext и анализатор ---
+
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 const analyser = audioCtx.createAnalyser();
 analyser.fftSize = 256;
@@ -35,12 +35,11 @@ analyser.connect(audioCtx.destination);
 const bufferLength = analyser.frequencyBinCount;
 const dataArray = new Uint8Array(bufferLength);
 
-// Сглаживание для трёх волн
 const smoothArray1 = new Float32Array(bufferLength);
 const smoothArray2 = new Float32Array(bufferLength);
 const smoothArray3 = new Float32Array(bufferLength);
 
-// --- Лог ---
+
 function log(msg) {
     const entry = document.createElement('div');
     entry.classList.add('log-entry');
@@ -50,7 +49,7 @@ function log(msg) {
     if (logDiv.childElementCount > 30) logDiv.removeChild(logDiv.firstChild);
 }
 
-// --- Визуализация ---
+
 function visualize() {
     analyser.getByteFrequencyData(dataArray);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -59,19 +58,19 @@ function visualize() {
     const centerY = canvas.height / 2;
     const amplitude = 150;
 
-    // Расчёт масштаба по ширине
+
     const scaleX = centerX / bufferLength;
 
-    // Обновляем сглаживание
+
     for (let i = 0; i < bufferLength; i++) {
-        const v = (dataArray[i] / 255 - 0.5) * 2;
+        const v = (dataArray[i] / 255 - 0.8) * 2;
         smoothArray1[i] = smoothArray1[i] * 0.8 + v * 0.2;
         smoothArray2[i] = smoothArray2[i] * 0.8 + v * 0.15;
         smoothArray3[i] = smoothArray3[i] * 0.8 + v * 0.1;
     }
 
     function drawWave(array, color, width) {
-        // Левая часть
+
         ctx.beginPath();
         for (let i = 0; i < bufferLength; i++) {
             const x = centerX - i * scaleX;
@@ -83,7 +82,6 @@ function visualize() {
         ctx.lineWidth = width;
         ctx.stroke();
 
-        // Правая часть
         ctx.beginPath();
         for (let i = 0; i < bufferLength; i++) {
             const x = centerX + i * scaleX;
@@ -104,7 +102,7 @@ function visualize() {
 }
 visualize();
 
-// --- Загрузка треков ---
+
 fileInput.addEventListener('change', () => {
     const files = Array.from(fileInput.files);
     if (!files.length) return;
@@ -117,7 +115,7 @@ fileInput.addEventListener('change', () => {
     log(`Loaded ${files.length} track(s)`);
 });
 
-// --- Загрузка и воспроизведение ---
+
 function loadTrack(index) {
     if (!playlist[index]) return;
     audio.src = URL.createObjectURL(playlist[index]);
@@ -126,7 +124,7 @@ function loadTrack(index) {
     updatePlaylist();
 }
 
-// --- Обновление плейлиста ---
+
 function updatePlaylist() {
     playlistDiv.innerHTML = '';
     playlist.forEach((track, index) => {
@@ -137,12 +135,13 @@ function updatePlaylist() {
         trackEl.addEventListener('click', () => {
             currentTrackIndex = index;
             loadTrack(currentTrackIndex);
+            audio.play();
         });
         playlistDiv.appendChild(trackEl);
     });
 }
 
-// --- Управление ---
+
 playPauseBtn.addEventListener('click', async () => {
     await audioCtx.resume();
     if (audio.paused) {
@@ -160,12 +159,12 @@ audio.addEventListener('ended', () => {
     playPauseBtn.textContent = 'Play';
 });
 
-// --- Громкость ---
+
 volumeSlider.addEventListener('input', () => {
     audio.volume = Math.min(1, Math.max(0, parseFloat(volumeSlider.value)));
 });
 
-// --- Прогресс ---
+
 audio.addEventListener('loadedmetadata', () => {
     progressBar.max = audio.duration;
     durationEl.textContent = formatTime(audio.duration);
@@ -184,16 +183,18 @@ function formatTime(sec) {
     return `${m}:${s}`;
 }
 
-// --- Переключение треков ---
+
 function nextTrack() {
     if (!playlist.length) return;
     currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
     loadTrack(currentTrackIndex);
+    audio.play();
 }
 function prevTrack() {
     if (!playlist.length) return;
     currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
     loadTrack(currentTrackIndex);
+    audio.play();
 }
 nextBtn.addEventListener('click', nextTrack);
 prevBtn.addEventListener('click', prevTrack);

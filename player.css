@@ -99,7 +99,7 @@ input[type="range"]{
     width: 14px;
     height: 14px;
     background: #2de2e6;
-    cursor: pointer; /* выравнивание по центру полоски */
+    cursor: pointer; 
 }
 
 #visualizer {
@@ -122,6 +122,7 @@ input[type="range"]{
     color: #2de2e6;
     font-family: 'VT323', monospace;
     margin-top: 10px;
+    background: none;
 }
 
 #progressBar {
