@@ -16,6 +16,7 @@ body {
 }
 
 #log {
+    margin:20px;
     background: #000;
     color: #2de2e6;
     font-family: 'VT323', monospace;
@@ -23,6 +24,7 @@ body {
     width: 600px;
     max-height: 200px;
     overflow-y: auto;
+    justify-content: flex-end;
 }
 
 #log::-webkit-scrollbar{
@@ -51,6 +53,15 @@ body {
     gap: 10px;
     align-items: center;
     margin-bottom: 20px;
+    position: fixed;
+    top: 25px;
+    right: 170px;
+    background: #000;
+    color: #fff;
+    padding: 10px;
+    overflow-y: auto;
+    font-family: 'VT323', monospace;
+    z-index: 100;
 }
 
 button, input[type="file"]{
@@ -100,6 +111,7 @@ input[type="range"]{
     width: 100vw;
     height: 150px;
     z-index: 10;
+    overflow: hidden;
 }
 
 #progressContainer {
@@ -113,7 +125,7 @@ input[type="range"]{
 }
 
 #progressBar {
-    width: 300px;
+    width: 500px;
     appearance: none;
     height: 4px;
     background: #2de2e6;
@@ -158,4 +170,35 @@ input[type="range"]{
 
 #fileLabel:active{
     transform: scale(0.95);
+}
+
+.playlist {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    width: 500px;
+    background: #000;
+    color: #fff;
+    padding: 10px;
+    max-height: 400px;
+    overflow-y: auto;
+    font-family: 'VT323', monospace;
+    border: 1px solid #2de2e6;
+    z-index: 100;
+}
+
+.playlist-track {
+    padding: 5px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.playlist-track:hover {
+    color: #2de2e6;
+}
+
+#PauseVolume{
+display: flex;
+ align-items: center;
+ gap: 10px;
 }
